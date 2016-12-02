@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Chope Short Url Service">
+    <meta name="keywords" content="Chope Short Url Service">
+    <link rel="shortcut icon" href="http://static.chope.info/static/admin2/assets/img/favicon.png">
+    <link rel="stylesheet" type="text/css" href="/static/thirdparty/bootstrap/3.3.5/css/bootstrap.min.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="/static/css/common.css" media="screen">
+    <title>Chope Short Url</title>
+</head>
+<body>
+<div class="wrapper">
+    <header class="header">
+        <div class="header-block header-block-search hidden-sm-down">
+            <form role="search">
+                <div class="input-container"> 
+                    <i class="fa fa-search"></i> 
+                    <input type="search" placeholder="Search">
+                    <div class="underline"></div>
+                 </div>
+            </form>
+        </div>
+        <div class="header-block header-block-nav">
+            <ul class="nav-profile">
+                <li class="profile dropdown">
+                    <a href="#" class="nav-link dropdown-toggle">
+                        <div style="width: 30px;background-image: url('/static/images/logo-100.png')" class="img"></div>
+                        <span class="name">{=$username=}</span> 
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </header>
+    <aside class="sidebar">
+        <div class="sidebar-container">
+            <div class="sidebar-header">
+                <div class="brand clearfix">
+                    <div class="logo"><img width=80 src="/static/images/logo-100.png"> </div> Chope Url 
+                 </div>
+                 <nav class="menu">
+                     <ul id="sidebar-menu" class="nav metismenu">
+                         <li class="active">
+                             <a href="/admin/index"> <i class="fa fa-home"></i> Dashboard </a>
+                         </li>
+                         <li>
+                             <a href="/admin/index"><i class="fa fa-th-large"></i> Items Manager <i class="fa arrow"></i></a>
+                         </li>
+                         <li>
+                             <a href="/admin/index"><i class="fa fa-bar-chart"></i> Charts <i class="fa arrow"></i></a>
+                         </li>
+                         <li>
+                             <a href="/admin/index"><i class="fa fa-github-alt"></i> Statistics </a>
+                         </li>
+                     </ul>
+                 </nav>
+             </div>
+             <footer class="sidebar-footer">
+                 <ul id="customize-menu" class="nav metismenu">
+                     <li>
+                         <a href="#"><i class="fa fa-cog"></i>  </a>
+                     </li>
+                 </ul>
+             </footer>
+        </div>
+    </aside>
+    <div class="main">
+        <section class="section">
+            <div class="row sameheight-container">
+                <div class="col col-xs-12 col-sm-12 col-md-12 col-xl-12 same left">
+                    <div class="card">
+                        <div class="card-block">
+                            <div class="title-block">
+                                <h4 class="title">Shorten Form</h4>
+                                <p class="title-description"> 
+                                    Chope shorten url funtion service 
+                                </p>
+                            </div>             
+                            <div class="box">
+                                Enter the URL：
+                                <input style="display:block;margin-top: 10px;" type="text" id="url" name="url" class="form-control" placeholder="Long Url Address" required autofocus><br>
+                                Optional :: Custom short URL：
+                                <span style="color:red;"><br>
+                                1. <strong>Important!!</strong> Custom short url keyword should not begin with lower case letter 'a'.<br>
+                                2. Custom short url keyword should not beyond 10 characters.<br> 
+                                3. Please default blank if need't use custom short url.<br>
+                                </span>
+                                <input style="display:block;margin-top: 10px;width:100px;" type="text" id="keyword" name="keyword" class="form-control" autofocus>
+                                <button style="margin-top: 20px;" id="ShortenIt" type="button" >ShortenIt</button>
+                            </div>
+                            
+                        </div>
+                    </div>  
+                </div>
+            </div>
+        </section>
+        <section class="section mt30">
+            <div class="row sameheight-container">
+                <div class="col col-xs-12 col-sm-12 col-md-12 col-xl-12 same left">
+                    <div class="card">
+                        <div class="card-block">
+                            <div id="url-list" class="urls">
+                                Yours chope short url list：<br><br> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+<script src="/static/thirdparty/jquery/1.11.3/jquery.min.js"></script>
+<script src="/static/thirdparty/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+    $(function(){
+        $('#ShortenIt').click(function(){
+            var longurl = $('#url').val();
+            var keyword = $('#keyword').val();
+            if (longurl.length < 1) {
+                alert('Please fill valid url address !');
+                return false;
+            }          
+            $.ajax({
+                type: 'get',
+                url: '/api/short/custom',
+                dataType:'json',
+                data:{url:longurl, keyword:keyword, from:'chope'},
+                success:function(result){
+                    if(result.status.code==0){
+                        data = result.result;
+                        $('#url-list').show();
+                        $('#url-list').append('<a target="_blank" href="' + data.url_short + '">' + data.url_short + '</a>');
+                    } else if (result.status.code==10000) {
+                        alert('keyword len should not beyond than our limit 10 cahracters !');
+                    } else if (result.status.code==10001) {
+                        alert('Keword exists !');
+                    } else if (result.status.code==10002) {
+                        alert("keywors should not begin with character 'z'");
+                    } 
+                    else {
+                        alert('server error !');
+                    } 
+                }    
+            }); 
+        });
+    }); 
+</script>
+</body>    
+</html>

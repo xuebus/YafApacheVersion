@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+     
+    <meta name="description" content="Chope Short Url Service">
+    <meta name="keywords" content="Chope Short Url Service">
+    
+    <link rel="shortcut icon" href="http://static.chope.info/static/admin2/assets/img/favicon.png?date=20160405">
+    
+    <link rel="stylesheet" type="text/css" href="/static/thirdparty/bootstrap/3.3.5/css/bootstrap.min.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="/static/css/admin.css" media="screen">
+   
+    <title>Chope Short Url</title>
+</head>
+<body>
+<div class="box" id="box">
+    <form action="/mis/admin/doLogin" method="post">
+        <div class="head">
+            <div class="logo"><img src="/static/images/lilogo.png"></div>
+            <div class="brand">Chope short url management system V1.0</div>
+        </div>
+        <div class="content">
+            <div class="login">
+                <input type="text" name="username" class="form-control" placeholder="Email address" required autofocus>
+                <input type="password" name="password" class="form-control" placeholder="Password" required>
+                <div class="checkbox">
+                    <label><input type="checkbox" value="remember-me"> Remember me</label>
+                </div>
+            </div>
+            <div class="clearfix">
+                <div class="p"><button class="submit" type="submit" onclick="window.location.href='/'">Login</button></div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="footer text-center">
+        © 2016 Chope . All Rights Reserved  - <a href="http://www.chope.co">www.chope.co</a>
+</div>
+<script type="text/javascript">
+    function setHeight(){
+            var topValue = (document.documentElement.clientHeight - 300) / 2 - 80;
+            var leftValue = (document.documentElement.clientWidth - 540) / 2;
+            document.getElementById("box").style.marginTop = topValue + "px";
+            document.getElementById("box").style.marginLeft = leftValue + "px";
+    };
+    setHeight();
+    window.onresize = setHeight; 
+</script> 
+</body>
+</html>
